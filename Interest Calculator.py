@@ -1,43 +1,39 @@
-from tkinter import *
-from tkinter.filedialog import askopenfilename, asksaveasfilename
+import tkinter as tk
 
-window = Tk()
-window.title("Codingal's Text Editor")
-window.geometry("600x500")
-window.rowconfigure(0, minisize = 800, weight = 1)
-window.columnconfigure(1, minisize = 800, weight = 1)
+def calculate_interest():
+    try:
+        # Get values from entry widgets
+        p = float(principal_entry.get())
+        r = float(rate_entry.get())
+        t = float(time_entry.get())
+        
+        interest = (p * r * t) / 100
+        result_label.config(text=f"Interest: {interest:.2f}")
+    except ValueError:
+        result_label.config(text="Please enter valid numbers")
 
-def open_file():
-    """Open a file for editing."""
-    filepath = askopenfilename(filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")])
-    if not filepath:
-        return
-    txt_edit.delete(1.0, END)
-    with open(filepath, "r") as input_file:
-        text = input_file.read()
-        txt_edit.insert(END, text)
-        input_file.close()
-    window.title(f"Codingal's Text Editor. - {filepath}")
+root = tk.Tk()
+root.title("Interest Calculator")
+root.geometry("400x300")
 
-def save_file():
-    """Open a file for editing."""
-    filepath = asksaveasfilename(defaultextension = "txt", filetypes = [("Text Files", "*.txt"), ("All Files", "*.*")])
-    if not filepath:
-        return
-    with open(filepath, "w") as output_file:
-        text = txt_edit.get(1.0, END)
-        output_file.write(text)
-    window.title(f"Codingal's Text Editor. - {filepath}")
+# Principal Input
+tk.Label(root, text="Principal:").grid(row=0, column=0)
+principal_entry = tk.Entry(root)
+principal_entry.grid(row=0, column=1)
 
-txt_edit = Text(window)
-fr_buttons = Frame(window, relief = RAISED, bd = 2)
-btn_open = Button(fr_buttons, text = "Open", command=open_file)
-btn_save = Button(fr_buttons, text = "Save As...", command = save_file)
+# Rate Input (Was missing in your original snippet)
+tk.Label(root, text="Rate (%):").grid(row=1, column=0)
+rate_entry = tk.Entry(root)
+rate_entry.grid(row=1, column=1)
 
-btn_open.grid(row = 0, coloumn = 0, sticky = "ew", padx = 5, pady = 5)
-btn_save.grid(row = 1, coloumn = 0, sticky = "ew", padx = 5)
+# Time Input (Was missing in your original snippet)
+tk.Label(root, text="Time (years):").grid(row=2, column=0)
+time_entry = tk.Entry(root)
+time_entry.grid(row=2, column=1)
 
-fr_buttons.grid(row = 0, column=0, sticky = "ns")
-txt_edit.grid(row = 0, column = 1, sticky = "nsew")
+# Action Buttons and Results
+tk.Button(root, text="Calculate", command=calculate_interest).grid(row=3, column=1)
+result_label = tk.Label(root, text="")
+result_label.grid(row=4, column=1)
 
-window.mainloop()
+root.mainloop()
